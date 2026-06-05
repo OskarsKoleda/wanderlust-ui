@@ -5,19 +5,19 @@ import { Link } from "react-router";
 export function Home() {
   return (
     <div>
-      <section className="from-secondary to-background bg-gradient-to-b py-20">
+      <section className="py-20">
         <div className="mx-auto max-w-6xl px-6 text-center">
           <div className="mb-6 flex justify-center">
-            <Plane className="text-primary h-16 w-16" />
+            <Plane className="h-16 w-16 text-primary" />
           </div>
           <h1 className="mb-4">Record Your Travel Adventures</h1>
-          <p className="text-muted-foreground mx-auto mb-8 max-w-2xl">
+          <p className="mx-auto mb-8 max-w-2xl text-muted-foreground">
             Create beautiful travel logs, document the places you visit, and
             share your experiences with the world.
           </p>
           <div className="flex justify-center gap-4">
             <Button size="lg" asChild>
-              <Link to="/trips/create">
+              <Link to="/create">
                 Start Your Journey
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>

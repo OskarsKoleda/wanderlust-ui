@@ -1,18 +1,90 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
+
+:root {
+  --background: #eee5e9;
+  /* --foreground: #18181b; */
+  --foreground: #18181b;
+  --primary: #08415c;
+  --primary-foreground: #ffffff;
+  --secondary: #d7ecf2;
+  --secondary-foreground: #08415c;
+  --card: #ffffff;
+  --card-foreground: #18181b;
+  --muted: #e6dde1;
+  --muted-foreground: #52525b;
+  --border: #d6cbd0;
+  --input-background: #eee5e9;
+  --ring: #08415c;
+  --accent: #d7ecf2;
+  --accent-foreground: #08415c;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --font-size: 16px;
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input-background: var(--input-background);
+  --color-ring: var(--ring);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+}
 
 @layer base {
   * {
-    @apply border-zinc-200 outline-zinc-950/50;
+    @apply border-border outline-primary/50;
   }
 
   body {
-    @apply bg-[#EEE5E9] text-zinc-950;
+    @apply bg-background text-foreground;
   }
 
   html {
     font-family: "Geist Variable", sans-serif;
+    font-size: var(--font-size);
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  label {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  button {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  input {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.5;
   }
 }

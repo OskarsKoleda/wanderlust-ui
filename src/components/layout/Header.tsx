@@ -46,7 +46,7 @@ export function Header() {
           className="flex items-center gap-3 text-white transition-opacity hover:opacity-80"
         >
           <Plane className="h-6 w-6 text-white" />
-          <h1 className="text=white">Wanderlust</h1>
+          <h1 className="text-white">Wanderlust</h1>
         </Link>
         <nav className="flex items-center gap-4">
           {navOptions.map((option) => (
