@@ -2,14 +2,14 @@ import { RootLayout } from "@/layouts/RootLayout";
 import { Home } from "@/pages/Home";
 import { Route, Routes } from "react-router";
 import { routes } from "./routes";
-import { Login } from "@/pages/Login";
+import { Auth } from "@/pages/Auth";
 
 const AppRoutes = () => {
   return (
     <Routes>
       <Route element={<RootLayout />}>
-        <Route path={routes.home} index element={<Home />} />
-        <Route path={routes.auth} element={<Login />} />
+        <Route index element={<Home />} />
+        <Route path={routes.auth} element={<Auth />} />
         <Route path={routes.explore} />
         <Route path={routes.portfolio} />
         <Route path={routes.create} />

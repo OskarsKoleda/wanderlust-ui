@@ -5,4 +5,5 @@ export const routes = {
   portfolio: "/portfolio",
   create: "/create",
   profile: "/profile",
+  signOut: "/sign-out",
 } as const;
