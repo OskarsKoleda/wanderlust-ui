@@ -6,15 +6,13 @@ import { useQueryClient } from "@tanstack/react-query";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
-  const { data: user = null, isLoading: isInitializing } = useCurrentUser();
+  const { data: user = null, isPending: isInitializing } = useCurrentUser();
   const setUser = (user: User | null) => {
     queryClient.setQueryData(["user"], user);
   };
 
-
-
   return (
-    <AuthContext.Provider value={{ user, setUser,  isInitializing }}>
+    <AuthContext.Provider value={{ user, setUser, isInitializing }}>
       {children}
     </AuthContext.Provider>
   );

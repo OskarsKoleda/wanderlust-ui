@@ -14,22 +14,18 @@ export function Header() {
   const isActiveLink = (path: string) =>
     path === "/"
       ? location.pathname === path
-      : location.pathname.startsWith(path);
+      : location.pathname.startsWith(`/${path}`);
 
   const { mutate: logoutUser, isPending: isLoggingOut } = useLogout(() => {
     navigate(routes.login);
   });
 
   const isNavVisible = (visibility: NavVisibility, user: User | null) => {
-    if (isInitializing && visibility !== "always") {
-      return false;
-    }
-
     switch (visibility) {
       case "always":
         return true;
       case "auth":
-        return user !== null;
+        return !isInitializing && user !== null;
       case "guest":
         return user === null;
     }
@@ -49,18 +45,18 @@ export function Header() {
           {navOptions
             .filter(({ visibility }) => isNavVisible(visibility, user))
             .map(({ name, link, icon: Icon }) => (
-                <Button
-                  key={name}
-                  variant="ghost"
-                  asChild
-                  className={`${isActiveLink(link) ? "bg-white/15 text-white" : ""} gap-2 text-white/80 hover:bg-white/10 hover:text-white`}
-                >
-                  <Link to={link}>
-                    <Icon />
-                    {name}
-                  </Link>
-                </Button>
-              ))}
+              <Button
+                key={name}
+                variant="ghost"
+                asChild
+                className={`${isActiveLink(link) ? "bg-white/15 text-white" : ""} gap-2 text-white/80 hover:bg-white/10 hover:text-white`}
+              >
+                <Link to={link}>
+                  <Icon />
+                  {name}
+                </Link>
+              </Button>
+            ))}
 
           {user && (
             <Button
