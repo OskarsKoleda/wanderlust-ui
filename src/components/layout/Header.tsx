@@ -1,48 +1,14 @@
 import { Link, useLocation, useNavigate } from "react-router";
-import {
-  Briefcase,
-  Compass,
-  Home,
-  LogOut,
-  Plane,
-  Plus,
-  User,
-} from "lucide-react";
+import { LogOut, Plane } from "lucide-react";
 import { Button } from "../ui/button";
 import { routes } from "@/router/routes";
 import { useAuth } from "@/context/auth-context";
 import { useLogout } from "@/features/auth/hooks";
-
-const navOptions = [
-  {
-    name: "Home",
-    link: routes.home,
-    icon: <Home />,
-  },
-  {
-    name: "Explore",
-    link: routes.explore,
-    icon: <Compass />,
-  },
-  {
-    name: "Portfolio",
-    link: routes.portfolio,
-    icon: <Briefcase />,
-  },
-  {
-    name: "Create Trip",
-    link: routes.create,
-    icon: <Plus />,
-  },
-  {
-    name: "Profile",
-    link: routes.profile,
-    icon: <User />,
-  },
-];
+import type { User } from "@/features/user/types";
+import { navOptions, type NavVisibility } from "./header-nav";
 
 export function Header() {
-  const { logout } = useAuth();
+  const { isInitializing, user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const isActiveLink = (path: string) =>
@@ -51,9 +17,23 @@ export function Header() {
       : location.pathname.startsWith(path);
 
   const { mutate: logoutUser, isPending: isLoggingOut } = useLogout(() => {
-    logout();
-    navigate("/auth?mode=login");
+    navigate(routes.login);
   });
+
+  const isNavVisible = (visibility: NavVisibility, user: User | null) => {
+    if (isInitializing && visibility !== "always") {
+      return false;
+    }
+
+    switch (visibility) {
+      case "always":
+        return true;
+      case "auth":
+        return user !== null;
+      case "guest":
+        return user === null;
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50" style={{ background: "#08415C" }}>
@@ -65,30 +45,35 @@ export function Header() {
           <Plane className="h-6 w-6 text-white" />
           <h1 className="text-white">Wanderlust</h1>
         </Link>
-        <nav className="flex items-center gap-4">
-          {navOptions.map(({ name, link, icon }) => (
+        <nav className="flex min-h-10 items-center gap-4">
+          {navOptions
+            .filter(({ visibility }) => isNavVisible(visibility, user))
+            .map(({ name, link, icon: Icon }) => (
+                <Button
+                  key={name}
+                  variant="ghost"
+                  asChild
+                  className={`${isActiveLink(link) ? "bg-white/15 text-white" : ""} gap-2 text-white/80 hover:bg-white/10 hover:text-white`}
+                >
+                  <Link to={link}>
+                    <Icon />
+                    {name}
+                  </Link>
+                </Button>
+              ))}
+
+          {user && (
             <Button
-              key={name}
-              variant="ghost"
-              asChild
-              className={`${isActiveLink(link) ? "bg-white/15 text-white" : ""} gap-2 text-white/80 hover:bg-white/10 hover:text-white`}
+              key={"Sign Out"}
+              variant="default"
+              className={`gap-2 text-white/80 hover:bg-red-200 hover:text-white`}
+              disabled={isLoggingOut}
+              onClick={() => logoutUser()}
             >
-              <Link to={link}>
-                {icon}
-                {name}
-              </Link>
+              <LogOut />
+              Sign Out
             </Button>
-          ))}
-          <Button
-            key={"Sign Out"}
-            variant="default"
-            className={`gap-2 text-white/80 hover:bg-red-200 hover:text-white`}
-            disabled={isLoggingOut}
-            onClick={() => logoutUser()}
-          >
-            <LogOut />
-            Sign Out
-          </Button>
+          )}
         </nav>
       </div>
     </header>

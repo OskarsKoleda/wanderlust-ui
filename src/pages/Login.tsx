@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from "@/context/auth-context";
 import { useLogin } from "@/features/auth/hooks";
 import type { LoginFormValues } from "@/features/auth/types";
+import { routes } from "@/router/routes";
 import { Plane } from "lucide-react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
@@ -18,11 +18,9 @@ export function Login() {
     shouldUnregister: true,
   });
 
-  const { setUser } = useAuth();
   const navigate = useNavigate();
 
-  const { mutate: login, isPending: isLoggingIn } = useLogin((data) => {
-    setUser(data);
+  const { mutate: login, isPending: isLoggingIn } = useLogin(() => {
     navigate("/");
   });
 
@@ -31,7 +29,7 @@ export function Login() {
   });
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
+    <div className="mt-10 flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 flex items-center justify-center gap-3">
           <Plane />
@@ -85,7 +83,10 @@ export function Login() {
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
           Don&apos;t have an account?{" "}
-          <Link to="/auth?mode=signup" className="text-primary hover:underline">
+          <Link
+            to={`/${routes.signup}`}
+            className="text-primary hover:underline"
+          >
             Register here
           </Link>
         </p>

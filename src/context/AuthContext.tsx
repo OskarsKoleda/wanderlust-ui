@@ -1,16 +1,20 @@
 import type { User } from "@/features/user/types";
-import { useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { AuthContext } from "./auth-context";
+import { useCurrentUser } from "@/features/user/hooks";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-
-  const logout = async () => {
-    setUser(null);
+  const queryClient = useQueryClient();
+  const { data: user = null, isLoading: isInitializing } = useCurrentUser();
+  const setUser = (user: User | null) => {
+    queryClient.setQueryData(["user"], user);
   };
 
+
+
   return (
-    <AuthContext.Provider value={{ user, setUser, logout }}>
+    <AuthContext.Provider value={{ user, setUser,  isInitializing }}>
       {children}
     </AuthContext.Provider>
   );

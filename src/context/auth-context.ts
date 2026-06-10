@@ -4,7 +4,7 @@ import { createContext, useContext } from "react";
 interface AuthContextValue {
   user: User | null;
   setUser: (user: User | null) => void;
-  logout: () => void;
+  isInitializing: boolean;
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null);

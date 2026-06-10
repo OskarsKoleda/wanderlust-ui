@@ -15,3 +15,9 @@ export const createUser = async (user: CreateUserPayload): Promise<User> => {
     throw error;
   }
 };
+
+export const getUser = async (): Promise<User> => {
+  const response = await apiClient.get("/users/me");
+
+  return response.data;
+};

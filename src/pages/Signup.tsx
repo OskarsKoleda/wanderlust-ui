@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from "@/context/auth-context";
 import { useCreateUser } from "@/features/user/hooks";
 import type { SignupFormValues } from "@/features/user/types";
 import {
@@ -10,14 +9,18 @@ import {
   passwordRules,
   usernameRules,
 } from "@/features/user/validation";
+import { routes } from "@/router/routes";
+import type { AxiosError } from "axios";
 import { Plane } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 
 export function Signup() {
+  const [error, setError] = useState<AxiosError<{ message: string }> | null>(
+    null
+  );
   const navigate = useNavigate();
-  const { setUser } = useAuth();
 
   const formMethods = useForm<SignupFormValues>({
     defaultValues: {
@@ -40,12 +43,10 @@ export function Signup() {
 
   const password = useWatch({ control, name: "password" });
 
-  const { mutate: createUser, isPending: isCreatingUser } = useCreateUser(
-    (data) => {
-      setUser(data);
-      navigate("/");
-    }
-  );
+  const { mutate: createUser, isPending: isCreatingUser } = useCreateUser({
+    onSuccess: () => navigate("/"),
+    onError: (error) => setError(error),
+  });
 
   const submitFormHandler = handleSubmit((data) => {
     const { passwordRepeat: _, ...payload } = data;
@@ -63,7 +64,7 @@ export function Signup() {
   }, [trigger, password]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
+    <div className="mt-10 flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 flex items-center justify-center gap-3">
           <Plane />
@@ -124,6 +125,12 @@ export function Signup() {
               {renderError({ message: errors.passwordRepeat?.message })}
             </div>
 
+            {error && (
+              <p className="text-sm text-destructive">
+                {error.response?.data?.message}
+              </p>
+            )}
+
             <Button
               id="signup"
               type="submit"
@@ -139,7 +146,10 @@ export function Signup() {
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
           Already have an account?{" "}
-          <Link to="/auth?mode=login" className="text-primary hover:underline">
+          <Link
+            to={`/${routes.login}`}
+            className="text-primary hover:underline"
+          >
             Sign in here
           </Link>
         </p>

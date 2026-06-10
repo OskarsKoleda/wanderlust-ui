@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "@fontsource-variable/geist";
 
 :root {
   --background: #eee5e9;
@@ -54,7 +53,12 @@
   }
 
   html {
-    font-family: "Geist Variable", sans-serif;
+    font-family:
+      "Geist Variable",
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      sans-serif;
     font-size: var(--font-size);
   }
 
