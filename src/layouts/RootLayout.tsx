@@ -3,9 +3,9 @@ import { Outlet } from "react-router";
 
 export function RootLayout() {
   return (
-    <div className="min-h-screen bg-background">
-      <Header/>
-      <main>
+    <div className="flex h-screen flex-col overflow-hidden bg-background">
+      <Header />
+      <main className="overflow-y-auto">
         <Outlet />
       </main>
     </div>

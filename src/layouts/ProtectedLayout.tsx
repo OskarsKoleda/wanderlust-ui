@@ -10,7 +10,7 @@ export function ProtectedLayout() {
   }
 
   return user ? (
-    <div className="min-h-screen bg-background">
+    <div className="bg-background">
       <main>
         <Outlet />
       </main>

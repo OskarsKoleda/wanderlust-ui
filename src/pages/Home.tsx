@@ -1,8 +1,15 @@
 import { Button } from "@/components/ui/button";
+import { useCreateDraftTrip } from "@/features/trip/hooks";
+import { routes } from "@/router/routes";
 import { Plane, ArrowRight } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export function Home() {
+  const navigate = useNavigate();
+  const { mutate: createTrip } = useCreateDraftTrip((data) =>
+    navigate(`trips/${data.id}/edit`)
+  );
+
   return (
     <div>
       <section className="py-20">
@@ -16,14 +23,14 @@ export function Home() {
             share your experiences with the world.
           </p>
           <div className="flex justify-center gap-4">
-            <Button size="lg" asChild>
-              <Link to="/create">
+            <Button size="lg" asChild onClick={() => createTrip()}>
+              <span>
                 Start Your Journey
                 <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
+              </span>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <Link to="/portfolio">View Portfolio</Link>
+              <Link to={`/${routes.trips}`}>View Your Trips</Link>
             </Button>
           </div>
         </div>

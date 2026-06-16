@@ -62,6 +62,10 @@
     font-size: var(--font-size);
   }
 
+  main {
+    scrollbar-gutter: stable;
+  }
+
   h1 {
     font-size: var(--text-2xl);
     font-weight: var(--font-weight-medium);

@@ -3,7 +3,6 @@ import {
   Compass,
   Home,
   LogIn,
-  Plus,
   User as UserIcon,
   type LucideIcon,
 } from "lucide-react";
@@ -32,15 +31,9 @@ export const navOptions: NavOptions[] = [
     visibility: "always",
   },
   {
-    name: "Portfolio",
-    link: routes.portfolio,
+    name: "My Trips",
+    link: routes.trips,
     icon: Briefcase,
-    visibility: "auth",
-  },
-  {
-    name: "Create Trip",
-    link: routes.create,
-    icon: Plus,
     visibility: "auth",
   },
   {
