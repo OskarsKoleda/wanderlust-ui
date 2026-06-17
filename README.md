@@ -1,21 +1,38 @@
-# React + TypeScript + Vite + shadcn/ui
+# Wanderlust UI
 
-This is a template for a new Vite project with React, TypeScript, and shadcn/ui.
+> **Work in progress** — this project is being developed and is not yet complete.
 
-## Adding components
+A travel journaling web app where users can document their trips, record visited places, and share their travel memories.
 
-To add components to your app, run the following command:
+Built with React, TypeScript, Vite, and shadcn/ui.
+
+## Getting started
 
 ```bash
-npx shadcn@latest add button
+npm install
+npm run dev
 ```
 
-This will place the ui components in the `src/components` directory.
+The app runs at `http://localhost:5173` by default.
 
-## Using components
+## Other commands
 
-To use the components in your app, import them as follows:
-
-```tsx
-import { Button } from "@/components/ui/button"
+```bash
+npm run build       # production build
+npm run typecheck   # type-check without emitting
+npm run lint        # lint
+npm run format      # format with prettier
 ```
+
+## Related
+
+- [Wanderlust API repository](https://github.com/OskarsKoleda/wanderlust-api)
+
+## Tech stack
+
+- [React](https://react.dev) + [TypeScript](https://www.typescriptlang.org)
+- [Vite](https://vitejs.dev)
+- [shadcn/ui](https://ui.shadcn.com) + [Tailwind CSS](https://tailwindcss.com)
+- [TanStack Query](https://tanstack.com/query)
+- [React Hook Form](https://react-hook-form.com)
+- [React Router](https://reactrouter.com)
