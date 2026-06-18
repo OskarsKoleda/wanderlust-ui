@@ -23,8 +23,8 @@ export interface TripFormValues {
 }
 
 export interface PlaceFormValues {
-  placeName: string;
+  name: string;
   location: string;
   description: string;
-  images: File[];
+  images?: File[];
 }

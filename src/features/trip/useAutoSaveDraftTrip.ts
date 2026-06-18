@@ -22,9 +22,9 @@ export function useAutoSaveDraftTrip({
     reset,
   } = methods;
 
-  const { mutate: updateTrip, isPending } = useUpdateTrip(tripId, (saved) => {
-    reset(tripToFormValues(saved));
-  });
+  const { mutate: updateTrip, isPending } = useUpdateTrip(tripId, (saved) =>
+    reset(tripToFormValues(saved))
+  );
 
   const values = useWatch({ control });
 

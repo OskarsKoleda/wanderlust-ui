@@ -5,7 +5,7 @@ import { routes } from "./routes";
 import { Signup } from "@/pages/Signup";
 import { Login } from "@/pages/Login";
 import { ProtectedLayout } from "@/layouts/ProtectedLayout";
-import { EditTrip } from "@/pages/EditTrip/EditTrip";
+import { EditTrip } from "@/pages/CreateNewTrip/CreateNewTrip";
 import { Trips } from "@/pages/Trips";
 import { TripDetails } from "@/pages/TripDetails";
 

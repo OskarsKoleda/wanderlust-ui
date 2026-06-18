@@ -29,7 +29,7 @@ export const useGetTrip = (id: string) => {
 };
 
 export const useGetTrips = () => {
-  return useQuery({
+  return useQuery<Trip[], Error>({
     queryKey: tripKeys.all,
     queryFn: getTrips,
   });
