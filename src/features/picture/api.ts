@@ -21,3 +21,15 @@ export const getPictures = async (tripId: string, placeId: string) => {
 
   return response.data;
 };
+
+export const deletePicture = async (
+  tripId: string,
+  placeId: string,
+  pictureId: string
+) => {
+  const response = await apiClient.delete<void>(
+    `/trips/${tripId}/places/${placeId}/pictures/${pictureId}`
+  );
+
+  return response.data;
+};

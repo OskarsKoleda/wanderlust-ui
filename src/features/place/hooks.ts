@@ -3,7 +3,6 @@ import {
   createDraftPlace,
   deletePlace,
   getPlacesByTripId,
-  requestUploadSignature,
   updatePlace,
 } from "./api";
 import type { Place, PlaceFormValues } from "./types";
@@ -65,12 +64,5 @@ export const useDeletePlace = (tripId: string, placeId: string) => {
         old?.filter((p) => p.id !== placeId)
       );
     },
-  });
-};
-
-export const useRequestUploadSignature = (tripId: string, placeId: string) => {
-  return useMutation({
-    mutationFn: () =>
-      requestUploadSignature({ trip_id: tripId, place_id: placeId }),
   });
 };

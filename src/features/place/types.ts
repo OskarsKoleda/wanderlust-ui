@@ -11,12 +11,3 @@ export interface Place {
 }
 
 export type PlaceFormValues = Pick<Place, "name" | "location" | "description">;
-
-export interface UploadSignature {
-  signature: string;
-  timestamp: number;
-  public_id: string;
-  folder: string;
-  api_key: string;
-  cloud_name: string;
-}

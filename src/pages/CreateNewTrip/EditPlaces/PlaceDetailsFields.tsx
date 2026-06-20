@@ -3,18 +3,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { uploadToCloudinary } from "@/features/cloudinary/api";
-import { useCreatePicture, useGetPictures } from "@/features/picture/hooks";
-import type { CreatePictureInput } from "@/features/picture/types";
-import {
-  useDeletePlace,
-  useRequestUploadSignature,
-  useUpdatePlace,
-} from "@/features/place/hooks";
+
+import { useGetPictures, usePictureManager } from "@/features/picture/hooks";
+import { useDeletePlace, useUpdatePlace } from "@/features/place/hooks";
 import type { Place, PlaceFormValues } from "@/features/place/types";
 import { placeToFormValues } from "@/features/place/utils";
 import { MapPin, Upload, X } from "lucide-react";
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useForm, useWatch } from "react-hook-form";
 
 const placeDefaultValues: PlaceFormValues = {
@@ -50,8 +45,7 @@ export function PlaceDetailsFields({ tripId, place }: PlaceDetailsFieldsProps) {
     reset(placeToFormValues(place))
   );
 
-  const { mutateAsync: createPicture } = useCreatePicture(tripId, place.id);
-  const { mutateAsync: requestUploadSignature } = useRequestUploadSignature(
+  const { handleFilesUpload, handleFileDestroy } = usePictureManager(
     tripId,
     place.id
   );
@@ -76,36 +70,6 @@ export function PlaceDetailsFields({ tripId, place }: PlaceDetailsFieldsProps) {
 
     return () => clearTimeout(timeout);
   }, [values, dirtyFields, getValues, isDirty, updatePlace, isPending]);
-
-  const handleFiles = useCallback(
-    async (files: File[]) => {
-      if (files.length === 0) {
-        return;
-      }
-
-      await Promise.all(
-        files.map(async (file) => {
-          const signature = await requestUploadSignature();
-          const uploadedImage = await uploadToCloudinary(file, signature);
-
-          const pictureInput: CreatePictureInput = {
-            cloudinary_public_id: uploadedImage.public_id,
-            cloudinary_url: uploadedImage.secure_url,
-            cloudinary_version: uploadedImage.version,
-            width: uploadedImage.width,
-            height: uploadedImage.height,
-            format: uploadedImage.format,
-            bytes: uploadedImage.bytes,
-            caption: uploadedImage.display_name,
-          };
-
-          await createPicture(pictureInput);
-        })
-      );
-    },
-
-    [createPicture, requestUploadSignature]
-  );
 
   return (
     <Card>
@@ -156,7 +120,7 @@ export function PlaceDetailsFields({ tripId, place }: PlaceDetailsFieldsProps) {
                 f.type.startsWith("image/")
               );
 
-              await handleFiles(files);
+              await handleFilesUpload(files);
             }}
             className="mt-2 cursor-pointer rounded-lg border-2 border-dashed border-border p-6 transition-colors hover:border-primary/50"
           >
@@ -169,7 +133,7 @@ export function PlaceDetailsFields({ tripId, place }: PlaceDetailsFieldsProps) {
               onChange={async (e) => {
                 const files = Array.from(e.target.files ?? []);
                 e.target.value = "";
-                await handleFiles(files);
+                await handleFilesUpload(files);
               }}
             />
             <div className="flex flex-col items-center justify-center text-center">
@@ -184,12 +148,19 @@ export function PlaceDetailsFields({ tripId, place }: PlaceDetailsFieldsProps) {
 
         {pictures && pictures.length > 0 && (
           <div className="mt-2 grid grid-cols-3 gap-2">
-            {pictures.map((pic) => (
-              <img
-                key={pic.id}
-                src={pic.cloudinary_url}
-                className="aspect-square rounded object-cover"
-              />
+            {pictures.map(({ id, cloudinary_public_id, cloudinary_url }) => (
+              <div key={id} className="relative">
+                <button
+                  onClick={() => handleFileDestroy(id, cloudinary_public_id)}
+                  className="absolute top-1 left-1 flex h-5 w-5 cursor-pointer items-center justify-center rounded-full bg-white/80 hover:bg-red-500 hover:text-white"
+                >
+                  <X size={12} />
+                </button>
+                <img
+                  src={cloudinary_url}
+                  className="aspect-square rounded border object-cover"
+                />
+              </div>
             ))}
           </div>
         )}

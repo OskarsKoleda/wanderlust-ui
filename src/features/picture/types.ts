@@ -17,3 +17,15 @@ export type Picture = CreatePictureInput & {
   created_at: string;
   updated_at: string;
 };
+
+export interface DestroySignature {
+  signature: string;
+  timestamp: number;
+  public_id: string;
+  api_key: string;
+  cloud_name: string;
+}
+
+export type UploadSignature = DestroySignature & {
+  folder: string;
+};
