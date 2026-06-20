@@ -3,12 +3,12 @@ import {
   createDraftPlace,
   deletePlace,
   getPlacesByTripId,
+  requestUploadSignature,
   updatePlace,
 } from "./api";
-import type { Place } from "./types";
-import type { PlaceFormValues } from "../trip/types";
+import type { Place, PlaceFormValues } from "./types";
 
-export const placeKeys = {
+const placeKeys = {
   byTrip: (tripId: string) => ["trips", tripId, "places"],
 };
 
@@ -65,5 +65,12 @@ export const useDeletePlace = (tripId: string, placeId: string) => {
         old?.filter((p) => p.id !== placeId)
       );
     },
+  });
+};
+
+export const useRequestUploadSignature = (tripId: string, placeId: string) => {
+  return useMutation({
+    mutationFn: () =>
+      requestUploadSignature({ trip_id: tripId, place_id: placeId }),
   });
 };

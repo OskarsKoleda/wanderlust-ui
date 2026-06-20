@@ -12,19 +12,7 @@ export interface Trip {
   updated_at: string;
 }
 
-// TODO: update case in API response
-export interface TripFormValues {
-  title: string;
-  start_date: string;
-  end_date: string;
-  description: string;
-  country: string;
-  city: string;
-}
-
-export interface PlaceFormValues {
-  name: string;
-  location: string;
-  description: string;
-  images?: File[];
-}
+export type TripFormValues = Pick<
+  Trip,
+  "title" | "start_date" | "end_date" | "description" | "country" | "city"
+>;

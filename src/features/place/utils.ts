@@ -1,5 +1,4 @@
-import type { PlaceFormValues } from "../trip/types";
-import type { Place } from "./types";
+import type { Place, PlaceFormValues } from "./types";
 
 export function placeToFormValues(place: Place): PlaceFormValues {
   return {
