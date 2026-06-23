@@ -4,13 +4,14 @@ import {
   useGetPlacesByTripId,
 } from "@/features/place/hooks";
 import { Plus } from "lucide-react";
-import { PlaceDetailsFields } from "./PlaceDetailsFields";
+import PlaceDetailsFields from "./PlaceDetailsFields";
+import { memo } from "react";
 
 interface EditPlacesProps {
   tripId: string;
 }
 
-export function EditPlaces({ tripId }: EditPlacesProps) {
+function EditPlaces({ tripId }: EditPlacesProps) {
   const { data: places } = useGetPlacesByTripId(tripId);
   const { mutate: createDraftPlace } = useCreateDraftPlace(tripId);
 
@@ -57,3 +58,5 @@ export function EditPlaces({ tripId }: EditPlacesProps) {
     </div>
   );
 }
+
+export default memo(EditPlaces);

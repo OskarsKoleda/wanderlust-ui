@@ -13,8 +13,8 @@ export const getTrip = async (id: string): Promise<Trip> => {
   return response.data;
 };
 
+// TODO: fix hardcoded status=all
 export const getTrips = async (): Promise<Trip[]> => {
-  // TODO: fix hardcoded status=all
   const response = await apiClient.get("/trips?status=all");
 
   return response.data;
@@ -27,4 +27,8 @@ export const updateTrip = async (
   const response = await apiClient.patch(`/trips/${id}`, payload);
 
   return response.data;
+};
+
+export const deleteTrip = async (tripId: string): Promise<void> => {
+  await apiClient.delete(`/trips/${tripId}`);
 };

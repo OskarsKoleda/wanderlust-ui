@@ -33,16 +33,20 @@ export function useAutoSaveDraftTrip({
       return;
     }
 
-    const timeout = setTimeout(() => {
-      const payload = Object.fromEntries(
-        Object.keys(dirtyFields).map((key) => [
-          key,
-          getValues(key as keyof TripFormValues),
-        ])
-      );
+    const dirtyKeys = Object.keys(dirtyFields);
 
-      updateTrip(payload);
-    }, 600);
+    if (dirtyKeys.length === 0) {
+      return;
+    }
+
+    // Snapshot the payload now (while dirtyFields is fresh) so the timeout
+    // always sends the values that were current when this effect ran.
+    // The cleanup cancels the timeout if the effect re-runs before 600ms.
+    const payload = Object.fromEntries(
+      dirtyKeys.map((key) => [key, getValues(key as keyof TripFormValues)])
+    );
+
+    const timeout = setTimeout(() => updateTrip(payload), 600);
 
     return () => clearTimeout(timeout);
   }, [
@@ -50,9 +54,9 @@ export function useAutoSaveDraftTrip({
     isDirty,
     trip.status,
     isPending,
+    dirtyFields,
     getValues,
     updateTrip,
-    dirtyFields,
   ]);
 
   return { isSaving: isPending };

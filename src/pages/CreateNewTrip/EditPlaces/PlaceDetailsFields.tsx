@@ -9,7 +9,7 @@ import { useDeletePlace, useUpdatePlace } from "@/features/place/hooks";
 import type { Place, PlaceFormValues } from "@/features/place/types";
 import { placeToFormValues } from "@/features/place/utils";
 import { MapPin, Upload, X } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import { useForm, useWatch } from "react-hook-form";
 
 const placeDefaultValues: PlaceFormValues = {
@@ -23,7 +23,7 @@ interface PlaceDetailsFieldsProps {
   place: Place;
 }
 
-export function PlaceDetailsFields({ tripId, place }: PlaceDetailsFieldsProps) {
+function PlaceDetailsFields({ tripId, place }: PlaceDetailsFieldsProps) {
   const mappedPlace = placeToFormValues(place);
   const inputRef = useRef<HTMLInputElement>(null);
   const methods = useForm<PlaceFormValues>({
@@ -168,3 +168,5 @@ export function PlaceDetailsFields({ tripId, place }: PlaceDetailsFieldsProps) {
     </Card>
   );
 }
+
+export default memo(PlaceDetailsFields);

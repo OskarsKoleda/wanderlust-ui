@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from "react-router";
-import { EditTripForm } from "./EditTrip/EditTripForm";
+import EditTripForm from "./EditTrip/EditTripForm";
 import { useGetTrip } from "@/features/trip/hooks";
 import { ArrowLeft, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { EditPlaces } from "./EditPlaces/EditPlaces";
+import EditPlaces from "./EditPlaces/EditPlaces";
 
 export function EditTrip() {
   const { id } = useParams();

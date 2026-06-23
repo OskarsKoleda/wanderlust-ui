@@ -1,5 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createDraftTrip, getTrip, getTrips, updateTrip } from "./api";
+import {
+  createDraftTrip,
+  deleteTrip,
+  getTrip,
+  getTrips,
+  updateTrip,
+} from "./api";
 import type { Trip, TripFormValues } from "./types";
 
 export const tripKeys = {
@@ -44,6 +50,18 @@ export const useUpdateTrip = (id: string, onSuccess?: (trip: Trip) => void) => {
       queryClient.setQueryData(tripKeys.detail(trip.id), trip);
       queryClient.invalidateQueries({ queryKey: tripKeys.all, exact: true });
       onSuccess?.(trip);
+    },
+  });
+};
+
+export const useDeleteTrip = (tripId: string, onSuccess?: () => void) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => deleteTrip(tripId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: tripKeys.all, exact: true });
+      onSuccess?.();
     },
   });
 };
