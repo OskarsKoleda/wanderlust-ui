@@ -3,7 +3,7 @@ export const routes = {
   login: "login",
   signup: "signup",
   explore: "explore",
-  trips: "trips",
+  myTrips: "my-trips",
   profile: "profile",
   signOut: "sign-out",
 } as const;

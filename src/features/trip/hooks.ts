@@ -7,10 +7,12 @@ import {
   updateTrip,
 } from "./api";
 import type { Trip, TripFormValues } from "./types";
+import type { User } from "../user/types";
 
 export const tripKeys = {
-  all: ["trips"] as const,
-  detail: (id: string) => ["trips", id] as const,
+  allTrips: ["trips"] as const,
+  userTrips: (userId: number) => ["user", userId, "trips"] as const,
+  tripDetails: (id: string) => ["trips", id] as const,
 };
 
 export const useCreateDraftTrip = (onSuccess?: (trip: Trip) => void) => {
@@ -19,8 +21,8 @@ export const useCreateDraftTrip = (onSuccess?: (trip: Trip) => void) => {
   return useMutation<Trip, Error>({
     mutationFn: createDraftTrip,
     onSuccess: (trip) => {
-      queryClient.setQueryData(tripKeys.detail(trip.id), trip);
-      queryClient.invalidateQueries({ queryKey: tripKeys.all });
+      queryClient.setQueryData(tripKeys.tripDetails(trip.id), trip);
+      queryClient.invalidateQueries({ queryKey: tripKeys.allTrips });
       onSuccess?.(trip);
     },
   });
@@ -28,7 +30,7 @@ export const useCreateDraftTrip = (onSuccess?: (trip: Trip) => void) => {
 
 export const useGetTrip = (id: string) => {
   return useQuery<Trip, Error>({
-    queryKey: tripKeys.detail(id),
+    queryKey: tripKeys.tripDetails(id),
     queryFn: () => getTrip(id),
     enabled: !!id,
   });
@@ -36,7 +38,7 @@ export const useGetTrip = (id: string) => {
 
 export const useGetTrips = () => {
   return useQuery<Trip[], Error>({
-    queryKey: tripKeys.all,
+    queryKey: tripKeys.allTrips,
     queryFn: getTrips,
   });
 };
@@ -47,8 +49,14 @@ export const useUpdateTrip = (id: string, onSuccess?: (trip: Trip) => void) => {
   return useMutation<Trip, Error, Partial<TripFormValues>>({
     mutationFn: (payload) => updateTrip(id, payload),
     onSuccess: (trip) => {
-      queryClient.setQueryData(tripKeys.detail(trip.id), trip);
-      queryClient.invalidateQueries({ queryKey: tripKeys.all, exact: true });
+      queryClient.setQueryData(tripKeys.tripDetails(trip.id), trip);
+      queryClient.invalidateQueries({
+        queryKey: tripKeys.allTrips,
+        exact: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: tripKeys.userTrips(Number(trip.user_id)),
+      });
       onSuccess?.(trip);
     },
   });
@@ -60,7 +68,19 @@ export const useDeleteTrip = (tripId: string, onSuccess?: () => void) => {
   return useMutation({
     mutationFn: () => deleteTrip(tripId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: tripKeys.all, exact: true });
+      const currentUser = queryClient.getQueryData<User>(["user"]);
+      const userId = currentUser?.id;
+
+      queryClient.invalidateQueries({
+        queryKey: tripKeys.allTrips,
+        exact: true,
+      });
+
+      if (userId) {
+        queryClient.invalidateQueries({
+          queryKey: tripKeys.userTrips(userId),
+        });
+      }
       onSuccess?.();
     },
   });

@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router";
 export function Home() {
   const navigate = useNavigate();
   const { mutate: createTrip } = useCreateDraftTrip((data) =>
-    navigate(`trips/${data.id}/edit`)
+    navigate(`${routes.myTrips}/${data.id}/edit`)
   );
 
   return (
@@ -30,7 +30,7 @@ export function Home() {
               </span>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <Link to={`/${routes.trips}`}>View Your Trips</Link>
+              <Link to={`/${routes.myTrips}`}>View Your Trips</Link>
             </Button>
           </div>
         </div>

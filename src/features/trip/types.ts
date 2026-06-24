@@ -10,6 +10,8 @@ export interface Trip {
   status: "draft" | "published";
   created_at: string;
   updated_at: string;
+  cover_picture_id: string | null;
+  places_count: number;
 }
 
 export type TripFormValues = Pick<

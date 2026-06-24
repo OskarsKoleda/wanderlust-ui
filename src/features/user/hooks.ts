@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createUser, getUser } from "./api";
+import { createUser, getUser, getUserTrips } from "./api";
 import type { CreateUserPayload, User } from "./types";
 import type { AxiosError } from "axios";
 
@@ -22,9 +22,17 @@ export const useCreateUser = (options?: {
 };
 
 export const useCurrentUser = () => {
-  return useQuery({
+  return useQuery<User>({
     queryKey: ["user"],
     queryFn: getUser,
     retry: false,
+  });
+};
+
+export const useGetUserTrips = (userId: number | undefined) => {
+  return useQuery({
+    queryKey: ["user", userId, "trips"],
+    queryFn: () => getUserTrips(userId!),
+    enabled: !!userId,
   });
 };

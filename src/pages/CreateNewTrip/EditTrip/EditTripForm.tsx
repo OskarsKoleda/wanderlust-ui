@@ -6,7 +6,7 @@ import { TripDetailsFields } from "./TripDetailsFields";
 import { Button } from "@/components/ui/button";
 import { Globe, Trash } from "lucide-react";
 import { useDeleteTrip } from "@/features/trip/hooks";
-import { memo, useCallback } from "react";
+import { memo } from "react";
 import { useNavigate } from "react-router";
 import { routes } from "@/router/routes";
 
@@ -34,7 +34,7 @@ function EditTripForm({ tripId, trip }: EditFormProps) {
 
   const { isSaving } = useAutoSaveDraftTrip({ trip, tripId, methods });
   const { mutate: deleteTrip } = useDeleteTrip(tripId, () =>
-    navigate(`/${routes.trips}`)
+    navigate(`/${routes.myTrips}`)
   );
 
   return (
@@ -47,10 +47,9 @@ function EditTripForm({ tripId, trip }: EditFormProps) {
           </p>
         </div>
         <div className="space-x-4">
-          <Button variant="destructive-outline" onClick={() => deleteTrip}>
+          <Button variant="destructive-outline" onClick={() => deleteTrip()}>
             <Trash className="h-4 w-4" />
             Discard
-            {/*TODO: work on that later*/}
           </Button>
           <Button>
             <Globe className="h-4 w-4" /> Publish

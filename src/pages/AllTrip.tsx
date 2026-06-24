@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { useGetTrips } from "@/features/trip/hooks";
+import { routes } from "@/router/routes";
 import { Link } from "react-router";
 
-export function Trips() {
+export function AllTrips() {
   const { data: trips, isLoading } = useGetTrips();
 
   if (isLoading) {
@@ -25,7 +26,7 @@ export function Trips() {
                   {trip.id} - {trip.title}
                 </h2>
                 <Button key={trip.id} asChild>
-                  <Link to={`/trips/${trip.id}`}>{trip.id}</Link>
+                  <Link to={`/${routes.myTrips}/${trip.id}`}>{trip.id}</Link>
                 </Button>
               </div>
             </div>

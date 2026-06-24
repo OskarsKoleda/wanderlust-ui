@@ -32,7 +32,7 @@ export const navOptions: NavOptions[] = [
   },
   {
     name: "My Trips",
-    link: routes.trips,
+    link: routes.myTrips,
     icon: Briefcase,
     visibility: "auth",
   },

@@ -15,7 +15,7 @@ export const getTrip = async (id: string): Promise<Trip> => {
 
 // TODO: fix hardcoded status=all
 export const getTrips = async (): Promise<Trip[]> => {
-  const response = await apiClient.get("/trips?status=all");
+  const response = await apiClient.get("/trips");
 
   return response.data;
 };
