@@ -1,12 +1,12 @@
 export interface Trip {
   id: string;
   user_id: string;
-  title: string;
-  start_date: string;
-  end_date: string;
-  description: string;
-  country: string;
-  city: string;
+  title: string | null;
+  start_date: string | null;
+  end_date: string | null;
+  description: string | null;
+  country: string | null;
+  city: string | null;
   status: "draft" | "published";
   created_at: string;
   updated_at: string;

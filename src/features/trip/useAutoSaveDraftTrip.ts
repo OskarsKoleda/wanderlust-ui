@@ -39,6 +39,13 @@ export function useAutoSaveDraftTrip({
       return;
     }
 
+    const startDate = getValues("start_date");
+    const endDate = getValues("end_date");
+
+    if (startDate && endDate && startDate > endDate) {
+      return;
+    }
+
     // Snapshot the payload now (while dirtyFields is fresh) so the timeout
     // always sends the values that were current when this effect ran.
     // The cleanup cancels the timeout if the effect re-runs before 600ms.

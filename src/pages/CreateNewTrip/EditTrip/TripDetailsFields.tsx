@@ -11,7 +11,15 @@ interface TripDetailsFieldsProps {
 }
 
 export function TripDetailsFields({ isSaving }: TripDetailsFieldsProps) {
-  const { register } = useFormContext<TripFormValues>();
+  const {
+    register,
+    watch,
+    formState: { errors },
+    trigger,
+  } = useFormContext<TripFormValues>();
+
+  const startDate = watch("start_date");
+  const endDate = watch("end_date");
 
   return (
     <Card>
@@ -49,12 +57,62 @@ export function TripDetailsFields({ isSaving }: TripDetailsFieldsProps) {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <Label htmlFor="startDate">Start Date</Label>
-            <Input id="startDate" type="date" {...register("start_date")} />
+            <Input
+              id="startDate"
+              type="date"
+              {...register("start_date", {
+                validate: (value) => {
+                  if (!value || !endDate) {
+                    return true;
+                  }
+
+                  const valid =
+                    value <= endDate ||
+                    "Start date must be before or equal to end date";
+
+                  if (valid) {
+                    trigger("end_date");
+                  }
+
+                  return valid;
+                },
+              })}
+            />
+            {errors.start_date && (
+              <p className="mt-1 text-sm text-destructive">
+                {errors.start_date.message}
+              </p>
+            )}
           </div>
 
           <div>
             <Label htmlFor="endDate">End Date</Label>
-            <Input id="endDate" type="date" {...register("end_date")} />
+            <Input
+              id="endDate"
+              type="date"
+              {...register("end_date", {
+                validate: (value) => {
+                  if (!value || !startDate) {
+                    return true;
+                  }
+
+                  const valid =
+                    value >= startDate ||
+                    "End date must be on or after start date";
+
+                  if (valid) {
+                    trigger("start_date");
+                  }
+
+                  return valid;
+                },
+              })}
+            />
+            {errors.end_date && (
+              <p className="mt-1 text-sm text-destructive">
+                {errors.end_date.message}
+              </p>
+            )}
           </div>
         </div>
 

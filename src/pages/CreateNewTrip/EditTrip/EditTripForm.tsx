@@ -28,6 +28,7 @@ function EditTripForm({ tripId, trip }: EditFormProps) {
   const methods = useForm<TripFormValues>({
     defaultValues,
     values: tripToFormValues(trip),
+    mode: "onChange",
   });
 
   const navigate = useNavigate();
